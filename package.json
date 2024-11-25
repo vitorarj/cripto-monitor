@@ -16,7 +16,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^10.0.0",
     "apexcharts": "^4.1.0",
+    "axios": "^1.7.8",
+    "date-fns": "^4.1.0",
     "pinia": "^2.2.6",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5",
