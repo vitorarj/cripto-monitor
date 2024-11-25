@@ -1,61 +1,92 @@
-# cripto-monitor
+# Cripto Monitor
 
-This template should help get you started developing with Vue 3 in Vite.
+Dashboard interativo para monitoramento de criptomoedas em tempo real utilizando a API da CoinGecko.
 
-## Recommended IDE Setup
+## Sobre o Projeto
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+O Cripto Monitor é uma aplicação Vue 3 que oferece:
 
-## Type Support for `.vue` Imports in TS
+- Monitoramento em tempo real de preços e tendências de criptomoedas
+- Gráficos dinâmicos com diversos indicadores técnicos
+- Filtros avançados por período, volume, capitalização e variação
+- Suporte offline com cache local para funcionamento sem internet
+- Interface responsiva e intuitiva
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Tecnologias
 
-## Customize configuration
+- Vue 3
+- TypeScript
+- Vite
+- CoinGecko API
+- Vitest
+- Cypress
+- ESLint
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Instalação
 
-## Project Setup
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/cripto-monitor
 
-```sh
+# Instale as dependências
 npm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env
 ```
 
-### Compile and Hot-Reload for Development
+Edite o arquivo `.env` com suas configurações:
 
-```sh
+```
+VITE_COINGECKO_API_KEY=sua_chave_api
+VITE_UPDATE_INTERVAL=30000
+```
+
+## Execução
+
+```bash
+# Ambiente de desenvolvimento
 npm run dev
-```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
+# Build de produção
 npm run build
-```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
+# Testes unitários
 npm run test:unit
-```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
+# Testes E2E em desenvolvimento
 npm run test:e2e:dev
-```
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
+# Testes E2E em produção
 npm run test:e2e
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Funcionalidades
 
-```sh
-npm run lint
-```
+### Gráficos
+
+- **Candlestick**: Exibe variações de preço em diferentes intervalos
+- **Volume**: Análise de volume de negociação
+- **Indicadores Técnicos**: Médias móveis, RSI, MACD
+- **Dominância**: Participação percentual no mercado
+
+### Filtros
+
+- Período: 24h, 7d, 30d, 1y
+- Capitalização de mercado
+- Volume de negociação
+- Variação percentual
+- Ranking por métricas específicas
+
+### Cache Local
+
+- Armazenamento automático dos últimos dados consultados
+- Sincronização inteligente ao recuperar conexão
+- Configuração de tempo de expiração do cache
+- Priorização de dados críticos para armazenamento offline
+
+### Atualizações em Tempo Real
+
+- WebSocket para dados de preço
+- Pooling configurável para outras métricas
+- Notificações de alterações significativas
