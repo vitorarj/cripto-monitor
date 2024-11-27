@@ -24,23 +24,13 @@ O Cripto Monitor é uma aplicação Vue 3 que oferece:
 
 ## Instalação
 
-```bash
+````bash
 # Clone o repositório
 git clone https://github.com/seu-usuario/cripto-monitor
 
 # Instale as dependências
 npm install
 
-# Configure as variáveis de ambiente
-cp .env.example .env
-```
-
-Edite o arquivo `.env` com suas configurações:
-
-```
-VITE_COINGECKO_API_KEY=sua_chave_api
-VITE_UPDATE_INTERVAL=30000
-```
 
 ## Execução
 
@@ -59,7 +49,7 @@ npm run test:e2e:dev
 
 # Testes E2E em produção
 npm run test:e2e
-```
+````
 
 ## Funcionalidades
 
@@ -73,20 +63,15 @@ npm run test:e2e
 ### Filtros
 
 - Período: 24h, 7d, 30d, 1y
-- Capitalização de mercado
-- Volume de negociação
-- Variação percentual
-- Ranking por métricas específicas
+- Moeda de Cotação
+- Nome da Criptomoeda
 
 ### Cache Local
 
 - Armazenamento automático dos últimos dados consultados
 - Sincronização inteligente ao recuperar conexão
 - Configuração de tempo de expiração do cache
-- Priorização de dados críticos para armazenamento offline
 
 ### Atualizações em Tempo Real
 
-- WebSocket para dados de preço
-- Pooling configurável para outras métricas
-- Notificações de alterações significativas
+- Pooling para métricas
