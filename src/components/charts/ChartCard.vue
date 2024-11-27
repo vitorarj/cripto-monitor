@@ -47,7 +47,7 @@ const props = defineProps({
 
       <div class="mt-4">
         <div class="flex justify-between text-sm text-gray-500">
-          <span>Updated 5m ago</span>
+          <span>Atualizado há 5 min</span>
           <span
             :class="{
               'text-green-500': change.startsWith('+'),

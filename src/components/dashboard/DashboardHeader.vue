@@ -22,8 +22,8 @@ const toggleFilters = () => {
       <!-- Header Main Row -->
       <div class="flex h-16 justify-between items-center">
         <div class="flex lg:flex-1">
-          <a href="#" class="-m-1.5 p-1.5">
-            <span>Cripto Monitor</span>
+          <a href="#">
+            <h2>Cripto Monitor</h2>
           </a>
         </div>
 
