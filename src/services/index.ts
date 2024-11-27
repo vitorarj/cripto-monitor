@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { type Router } from 'vue-router'
 
-const baseURL = 'https://api.coingecko.com/api/v3/coins'
+const baseURL = 'https://api.coingecko.com/api/v3'
 
 const apiClient = axios.create({
   baseURL,

@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import ApiService from '@/services/api.services'
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 
 onMounted(async () => {
   await getCryptos()
+  await getCurrencies()
+  await getTradingVolume()
 })
 
 const cryptos = ref<any>([])
+const currencies = ref<any>([])
 
 const showFilters = ref(false)
 const selectedPeriod = ref('7d')
 const selectedMetric = ref('price')
-const selectedCrypto = ref('')
+const selectedCrypto = ref('01coin')
+const selectedCurrency = ref('usd')
 
 const headerHeight = computed(() => {
   return showFilters.value ? 'h-[160px]' : 'h-16'
@@ -24,10 +29,48 @@ const toggleFilters = () => {
 const getCryptos = async () => {
   try {
     const apiService = new ApiService()
-    cryptos.value = await apiService.getAll(`list`)
+    cryptos.value = await apiService.getAll(`coins/list`)
   } catch (error) {
     console.error('Error fetching products:', error)
   }
+}
+
+const getCurrencies = async () => {
+  try {
+    const apiService = new ApiService()
+    currencies.value = await apiService.getAll(`simple/supported_vs_currencies`)
+  } catch (error) {
+    console.error('Error fetching products:', error)
+  }
+}
+
+// Função para obter o volume de negociação em tempo real da criptomoeda selecionada
+const getTradingVolume = async () => {
+  if (!selectedCrypto.value) return
+
+  try {
+    const apiService = new ApiService()
+    const data = await apiService.getAll(`coins/${selectedCrypto.value}/tickers`)
+
+    // Supondo que a API retorne um array de tickers, vamos filtrar o volume
+    tradingVolumeData.value = data.tickers.map((ticker: any) => ({
+      time: ticker.timestamp,
+      volume: ticker.volume,
+    }))
+
+    // Atualize os dados do gráfico
+    updateVolumeChart(tradingVolumeData.value)
+  } catch (error) {
+    console.error('Error fetching trading volume:', error)
+  }
+}
+
+// Função para atualizar o gráfico com os dados de volume
+const updateVolumeChart = (data: any) => {
+  areaChartData.series[0].data = data.map((item: any) => item.volume)
+  areaChartData.options.xaxis.categories = data.map((item: any) =>
+    new Date(item.time * 1000).toLocaleString(),
+  ) // Converter timestamp para data legível
 }
 
 import VueApexCharts from 'vue3-apexcharts'
@@ -59,22 +102,20 @@ const areaChartData = {
   series: [
     {
       name: 'Volume',
-      data: [44, 55, 41, 67, 22, 43, 21],
+      data: [], // Os dados serão preenchidos dinamicamente
     },
   ],
   options: {
     chart: {
-      type: 'area',
+      type: 'line',
       toolbar: { show: false },
     },
+    stroke: {
+      curve: 'stepline', // Tipo de gráfico de linha
+    },
     colors: ['#06b6d4'],
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.3,
-      },
+    xaxis: {
+      categories: [], // As categorias serão preenchidas dinamicamente com o timestamp convertido
     },
   },
 }
@@ -150,7 +191,7 @@ const radarChartData = {
 }
 
 const charts = [
-  { title: 'Price Trend', type: 'line', data: lineChartData, change: '+5.23%' },
+  { title: 'Preço da Criptomoeda', type: 'line', data: lineChartData, change: '+5.23%' },
   { title: 'Trading Volume', type: 'area', data: areaChartData, change: '-2.15%' },
   { title: 'Daily Returns', type: 'bar', data: barChartData, change: '+1.87%' },
   { title: 'Market Distribution', type: 'donut', data: donutChartData, change: '+0.54%' },
@@ -201,10 +242,10 @@ const charts = [
                 v-model="selectedPeriod"
                 class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
               >
-                <option value="24h">Last 24 hours</option>
-                <option value="7d">Last 7 days</option>
-                <option value="30d">Last 30 days</option>
-                <option value="90d">Last 90 days</option>
+                <option value="24h">Ultimas 24 horas</option>
+                <option value="7d">Ultimos 7 dias</option>
+                <option value="30d">Ultimos 30 dias</option>
+                <option value="90d">Ultimos 90 dias</option>
               </select>
             </div>
 
@@ -212,12 +253,12 @@ const charts = [
             <div>
               <label class="block text-sm font-medium text-gray-700">Moeda de Cotação</label>
               <select
-                v-model="selectedMetric"
+                v-model="selectedCurrency"
                 class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
               >
-                <option value="price">Price</option>
-                <option value="volume">Volume</option>
-                <option value="marketCap">Market Cap</option>
+                <option v-for="item in currencies" :key="item" :value="item">
+                  {{ item.toUpperCase() }}
+                </option>
               </select>
             </div>
 
