@@ -11,7 +11,8 @@ const headerHeight = computed(() => {
   return showFilters.value ? 'h-[160px]' : 'h-16'
 })
 
-const toggleFilters = () => {
+const applyFilters = async () => {
+  await Promise.all([store.getCurrentPrice(), store.getPriceHistory(), store.getTradingVolume()])
   store.toggleFilters()
 }
 </script>
@@ -29,7 +30,7 @@ const toggleFilters = () => {
 
         <div class="flex items-center gap-4">
           <button
-            @click="toggleFilters"
+            @click="store.toggleFilters"
             class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
           >
             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -86,7 +87,7 @@ const toggleFilters = () => {
 
           <div>
             <button
-              @click="store.applyFilters()"
+              @click="applyFilters"
               class="w-full rounded-md bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Aplicar Filtros
@@ -97,6 +98,5 @@ const toggleFilters = () => {
     </div>
   </header>
 
-  <!-- Spacer for fixed header -->
   <div :class="[headerHeight]"></div>
 </template>

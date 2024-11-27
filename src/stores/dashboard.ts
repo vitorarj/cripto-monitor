@@ -72,7 +72,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
           },
         },
         stroke: { curve: 'smooth', width: 2 },
-        colors: ['#4f46e5'],
+        colors: ['#00A83E'],
         markers: { size: 0 },
         grid: { borderColor: '#f1f1f1' },
         xaxis: {
@@ -231,16 +231,16 @@ export const useDashboardStore = defineStore('dashboard', () => {
       change: '+5.23%',
     },
     {
-      title: 'Trading Volume',
+      title: 'Volume em Tempo Real',
       type: 'area',
       data: { ...chartConfigs.tradingVolume },
       change: '-2.15%',
     },
     {
-      title: 'Daily Returns',
-      type: 'bar',
-      data: { ...chartConfigs.dailyReturns },
-      change: '+1.87%',
+      title: ' Variação Percentual',
+      type: 'candlestick',
+      data: { ...chartConfigs.priceAction },
+      change: '-0.92%',
     },
     {
       title: 'Histórico de Preços',
@@ -249,14 +249,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
       change: '+5.23%',
     },
     {
-      title: 'Price Action',
-      type: 'candlestick',
-      data: { ...chartConfigs.priceAction },
-      change: '-0.92%',
+      title: 'Comparação de Market Cap',
+      type: 'slope-multi',
+      data: { ...chartConfigs.dailyReturns },
+      change: '+1.87%',
     },
     {
-      title: 'Market Metrics',
-      type: 'radar',
+      title: 'Moedas com Maior Valorização',
+      type: 'slope-basic',
       data: { ...chartConfigs.marketMetrics },
       change: '+3.45%',
     },
@@ -366,7 +366,9 @@ export const useDashboardStore = defineStore('dashboard', () => {
     try {
       isLoading.value = true
       const apiService = new ApiService()
-      const data = await apiService.getAll(`coins/${selectedCrypto.value}/tickers`)
+      const data = await apiService.getAll(
+        `coins/ethereum/market_chart?vs_currency=usd&days=1&interval=minutely`,
+      )
 
       if (data && data.tickers) {
         updateTradingVolumeChart(data.tickers)
